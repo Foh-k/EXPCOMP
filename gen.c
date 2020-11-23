@@ -70,6 +70,52 @@ void genCodeExprSub(ExprNodePtr expr)
     fprintf(af, "      inc sp\n");
 }
 
+void genCodeExprBlt(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      sub ixr, 0\n");
+    fprintf(af, "      ld #1\n");
+    fprintf(af, "      jps L%04d\n", labelNo);
+    fprintf(af, "      ld #0\n");
+    fprintf(af, "L%04d:push\n", labelNo);
+    labelNo++;
+}
+
+void genCodeExprBeq(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      sub ixr, 0\n");
+    fprintf(af, "      ld #1\n");
+    fprintf(af, "      jpz L%04d\n", labelNo);
+    fprintf(af, "      ld #0\n");
+    fprintf(af, "L%04d:push\n", labelNo);
+    labelNo++;
+}
+
+void genCodeExprBne(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      sub ixr, 0\n");
+    fprintf(af, "      ld #0\n");
+    fprintf(af, "      jpz L%04d\n", labelNo);
+    fprintf(af, "      ld #1\n");
+    fprintf(af, "L%04d:push\n", labelNo);
+    labelNo++;
+}
+
 void genCodeExpr(ExprNodePtr expr)
 {
     switch (expr->op)
@@ -97,7 +143,19 @@ void genCodeExpr(ExprNodePtr expr)
     case OP_SUB:
         genCodeExprSub(expr);
         break;
-        
+
+    case OP_BLT:
+        genCodeExprBlt(expr);
+        break;
+
+    case OP_BEQ:
+        genCodeExprBeq(expr);
+        break;
+
+    case OP_BNE:
+        genCodeExprBne(expr);
+        break;
+
     default:
         fprintf(stderr, "Undefined Expression\n");
         exit(1);

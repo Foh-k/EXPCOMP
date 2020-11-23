@@ -28,11 +28,21 @@ void test5()
     genCodeExpr(sub);
 }
 
+void test6()
+{
+    ExprNodePtr lit1 = makeExpr(OP_CONST, 3, NULL, NULL, NULL);
+    ExprNodePtr lit2 = makeExpr(OP_CONST, 4, NULL, NULL, NULL);
+    ExprNodePtr blt = makeExpr(OP_BLT, 0, NULL, lit1, lit2);
+    genCodeExpr(blt);
+}
+
 int main()
 {
     af = stdout;
     // test1();
     // test4();
-    test5();
+    // test5();
+    test6();
+    
     return 0;
 }
