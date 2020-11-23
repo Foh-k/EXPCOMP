@@ -41,11 +41,33 @@ void genCodeExprVar(ExprNodePtr expr)
         fprintf(af, "      ld G%04d ; %s\n", s->no, s->name);
         fprintf(af, "      push\n");
         break;
-    
+
     default:
         fprintf(stderr, "Undefined Variable Class\n");
         exit(1);
     }
+}
+
+void genCodeExprAdd(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      add ixr, 0\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      inc sp\n");
+}
+
+void genCodeExprSub(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      sub ixr, 0\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      inc sp\n");
 }
 
 void genCodeExpr(ExprNodePtr expr)
@@ -68,7 +90,14 @@ void genCodeExpr(ExprNodePtr expr)
         genCodeExprVar(expr);
         break;
 
+    case OP_ADD:
+        genCodeExprAdd(expr);
+        break;
 
+    case OP_SUB:
+        genCodeExprSub(expr);
+        break;
+        
     default:
         fprintf(stderr, "Undefined Expression\n");
         exit(1);

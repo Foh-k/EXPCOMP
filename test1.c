@@ -18,10 +18,21 @@ void test4()
     genCodeExpr(e1);
 }
 
+void test5()
+{
+    ExprNodePtr lit1 = makeExpr(OP_CONST, 1, NULL, NULL, NULL);
+    ExprNodePtr lit2 = makeExpr(OP_CONST, 2, NULL, NULL, NULL);
+    ExprNodePtr lit3 = makeExpr(OP_CONST, 3, NULL, NULL, NULL);
+    ExprNodePtr add = makeExpr(OP_ADD, 0, NULL, lit2, lit1);
+    ExprNodePtr sub = makeExpr(OP_SUB, 0, NULL, lit3, add);
+    genCodeExpr(sub);
+}
+
 int main()
 {
     af = stdout;
     // test1();
-    test4();
+    // test4();
+    test5();
     return 0;
 }
