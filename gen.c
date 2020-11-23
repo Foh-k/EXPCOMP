@@ -32,6 +32,22 @@ void genCodeExprNot(ExprNodePtr expr)
     labelNo++;
 }
 
+void genCodeExprVar(ExprNodePtr expr)
+{
+    SymEntryPtr s = expr->sym;
+    switch (s->class)
+    {
+    case SYM_GLOBAL:
+        fprintf(af, "      ld G%04d ; %s\n", s->no, s->name);
+        fprintf(af, "      push\n");
+        break;
+    
+    default:
+        fprintf(stderr, "Undefined Variable Class\n");
+        exit(1);
+    }
+}
+
 void genCodeExpr(ExprNodePtr expr)
 {
     switch (expr->op)
@@ -47,6 +63,11 @@ void genCodeExpr(ExprNodePtr expr)
     case OP_NOT:
         genCodeExprNot(expr);
         break;
+
+    case OP_VAR:
+        genCodeExprVar(expr);
+        break;
+
 
     default:
         fprintf(stderr, "Undefined Expression\n");

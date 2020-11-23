@@ -1,4 +1,4 @@
-
+#pragma once
 
 typedef enum {
     OP_ASSSIGN, /* Assignment */
@@ -9,8 +9,16 @@ typedef enum {
     OP_CONST /* Literal */
 } OpSort; /* Sort of operators */
 
+typedef enum {
+    SYM_GLOBAL
+} SymbolSort;
+
 typedef struct SymEntry *SymEntryPtr;
-typedef struct SymEntry{} SymEntry; // あとで書く
+typedef struct SymEntry{
+    SymbolSort class;
+    char *name;
+    int no;
+} SymEntry;
 
 typedef struct ExprNode *ExprNodePtr;
 typedef struct ExprNode

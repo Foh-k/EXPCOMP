@@ -11,9 +11,17 @@ void test1()
     genCodeExpr(not2);
 }
 
+void test4()
+{
+    SymEntry s1 = {SYM_GLOBAL, "hanoicount", 7};
+    ExprNodePtr e1 = makeExpr(OP_VAR, 0, &s1, NULL, NULL);
+    genCodeExpr(e1);
+}
+
 int main()
 {
     af = stdout;
-    test1();
+    // test1();
+    test4();
     return 0;
 }
