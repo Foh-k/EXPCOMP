@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "./ast.h"
+#include "ast.h"
+#include "gen.h"
 
 extern FILE *af;
+extern int multcall;
+extern int divcall;
+
 int labelNo = 0;
 
 void genCodeExprConst(ExprNodePtr expr)
@@ -88,8 +92,6 @@ void genCodeExprBeq(ExprNodePtr expr)
 {
     genCodeExpr(expr->sub1);
     genCodeExpr(expr->sub2);
-    genCodeExpr(expr->sub1);
-    genCodeExpr(expr->sub2);
     fprintf(af, "      mv ixr, sp\n");
     fprintf(af, "      ld ixr, 1\n");
     fprintf(af, "      sub ixr, 0\n");
@@ -104,8 +106,6 @@ void genCodeExprBne(ExprNodePtr expr)
 {
     genCodeExpr(expr->sub1);
     genCodeExpr(expr->sub2);
-    genCodeExpr(expr->sub1);
-    genCodeExpr(expr->sub2);
     fprintf(af, "      mv ixr, sp\n");
     fprintf(af, "      ld ixr, 1\n");
     fprintf(af, "      sub ixr, 0\n");
@@ -114,6 +114,22 @@ void genCodeExprBne(ExprNodePtr expr)
     fprintf(af, "      ld #1\n");
     fprintf(af, "L%04d:push\n", labelNo);
     labelNo++;
+}
+
+void genCodeExprMult(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      call _mult\n");
+    multcall = 1;
+}
+
+void genCodeExprDiv(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      call _div\n");
+    divcall = 1;
 }
 
 void genCodeExpr(ExprNodePtr expr)
@@ -154,6 +170,14 @@ void genCodeExpr(ExprNodePtr expr)
 
     case OP_BNE:
         genCodeExprBne(expr);
+        break;
+
+    case OP_MUL:
+        genCodeExprMult(expr);
+        break;
+
+    case OP_DIV:
+        genCodeExprDiv(expr);
         break;
 
     default:

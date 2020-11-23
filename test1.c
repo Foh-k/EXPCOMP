@@ -1,7 +1,10 @@
 #include <stdio.h>
-#include "./ast.h"
+#include "ast.h"
+#include "gen.h"
 
 FILE *af;
+extern int multcall;
+extern int divcall;
 
 void test1()
 {
@@ -36,13 +39,27 @@ void test6()
     genCodeExpr(blt);
 }
 
+void test7()
+{
+    ExprNodePtr lit1 = makeExpr(OP_CONST, 3, NULL, NULL, NULL);
+    ExprNodePtr lit2 = makeExpr(OP_CONST, 4, NULL, NULL, NULL);
+    ExprNodePtr mul = makeExpr(OP_MUL, 0, NULL, lit1, lit2);
+    genCodeExpr(mul);
+}
+
 int main()
 {
     af = stdout;
     // test1();
     // test4();
     // test5();
-    test6();
-    
+    // test6();
+    test7();
+
+    if (multcall)
+        multLib();
+    if (divcall)
+        divLib();
+
     return 0;
 }

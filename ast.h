@@ -3,7 +3,7 @@
 typedef enum {
     OP_ASSSIGN, /* Assignment */
     OP_LOR, OP_LAND, OP_BLT, OP_BEQ, OP_BNE, /* Binary Operators */
-    OP_ADD, OP_SUB, SP_MUL, OP_DIV, OP_MOD,
+    OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD,
     OP_NOT, OP_UM, /* Unary Operators */
     OP_VAR, /* Variable Reference */
     OP_CONST /* Literal */

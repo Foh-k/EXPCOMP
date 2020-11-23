@@ -2,9 +2,9 @@
 CC := gcc
 CFLAGS :=  -Wall -Wextra
 
-test1: ast.o gen.o test1.o
+test1: ast.o gen.o mult.o div.o test1.o
 
-ast.o gen.o test1.o : ast.h
+ast.o gen.o mult.o div.o test1.o : ast.h gen.h
 
 clean:
 	$(RM) *.o
