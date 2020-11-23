@@ -10,14 +10,14 @@ void genCodeExprConst(ExprNodePtr expr)
     fprintf(af, "      push\n");
 }
 
-// void genCodeExprUM(ExprNodePtr expr)
-// {
-//     genCodeExpr(expr->sub1);
-//     fprintf(af, "      ld #0\n");
-//     fprintf(af, "      mv ixr, sp\n");
-//     fprintf(af, "      sub ixr, 0\n");
-//     fprintf(af, "      st ixr, 0\n");
-// }
+void genCodeExprUM(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    fprintf(af, "      ld #0\n");
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      sub ixr, 0\n");
+    fprintf(af, "      st ixr, 0\n");
+}
 
 void genCodeExpr(ExprNodePtr expr)
 {
@@ -27,9 +27,9 @@ void genCodeExpr(ExprNodePtr expr)
         genCodeExprConst(expr);
         break;
 
-    // case OP_UM:
-    //     genCodeExprUM(expr);
-    //     break;
+    case OP_UM:
+        genCodeExprUM(expr);
+        break;
     default:
         fprintf(stderr, "Undefined Expression\n");
         exit(1);
