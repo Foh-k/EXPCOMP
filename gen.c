@@ -132,6 +132,54 @@ void genCodeExprDiv(ExprNodePtr expr)
     divcall = 1;
 }
 
+void genCodeExprAssign(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    fprintf(af, "      pop ; =Assignment\n");
+    fprintf(af, "      st G%04d\n", expr->sym->no);
+    fprintf(af, "      push\n");
+}
+
+void genCodeExprLor(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    fprintf(af, "      pop\n");
+    fprintf(af, "      or #0\n");
+    fprintf(af, "      jpz L%04d\n", labelNo + 1);
+    fprintf(af, "      jp L%04d\n", labelNo + 2);
+    fprintf(af, "L%04d:\n", labelNo + 1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      pop\n");
+    fprintf(af, "      or #0\n");
+    fprintf(af, "      jpz L%04d\n", labelNo);
+    fprintf(af, "L%04d:\n", labelNo + 2);
+    fprintf(af, "      ld #1\n");
+    fprintf(af, "L%04d:\n", labelNo);
+    fprintf(af, "      push\n");
+    labelNo += 3;
+}
+
+void genCodeExprLand(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    fprintf(af, "      pop\n");
+    fprintf(af, "      or #0\n");
+    fprintf(af, "      jpz L%04d\n", labelNo + 2);
+    fprintf(af, "      jp L%04d\n", labelNo + 1);
+    fprintf(af, "L%04d:\n", labelNo + 1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      pop\n");
+    fprintf(af, "      or #0\n");
+    fprintf(af, "      jpz L%04d\n", labelNo + 2);
+    fprintf(af, "      ld #1\n");
+    fprintf(af, "      jp L%04d\n", labelNo);
+    fprintf(af, "L%04d:\n", labelNo + 2);
+    fprintf(af, "      ld #0\n");
+    fprintf(af, "L%04d:\n", labelNo);
+    fprintf(af, "      push\n");
+    labelNo += 3;
+}
+
 void genCodeExpr(ExprNodePtr expr)
 {
     switch (expr->op)
@@ -178,6 +226,10 @@ void genCodeExpr(ExprNodePtr expr)
 
     case OP_DIV:
         genCodeExprDiv(expr);
+        break;
+
+    case OP_ASSSIGN:
+        genCodeExprAssign(expr);
         break;
 
     default:

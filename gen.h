@@ -14,6 +14,9 @@ void genCodeExprBeq(ExprNodePtr expr);
 void genCodeExprBne(ExprNodePtr expr);
 void genCodeExpr(ExprNodePtr expr);
 void genCodeExprMult(ExprNodePtr expr);
+void genCodeExprAssign(ExprNodePtr expr);
+void genCodeExprLor(ExprNodePtr expr);
+void genCodeExprLand(ExprNodePtr expr);
 
 // in mult.c
 void multLib(void);
