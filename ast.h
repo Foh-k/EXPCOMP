@@ -30,8 +30,24 @@ typedef struct ExprNode
     ExprNodePtr sub2;
 } ExprNode;
 
+typedef enum {
+    STMT_EXPR, STMT_IF, STMT_WHILE, STMT_RETURN
+} StmtSort;
+
+typedef struct StmtNode *StmtNodePtr;
+typedef struct StmtNode
+{
+    StmtSort sort;
+    StmtNodePtr next;
+    ExprNodePtr expr;
+    StmtNodePtr st1, st2;
+} StmtNode;
+
+
+
 // in ast.c
 ExprNodePtr makeExpr(OpSort opr, int value, SymEntryPtr symbol, ExprNodePtr left, ExprNodePtr right);
+StmtNodePtr makeStmt(StmtSort sort, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2);
 
 // in gen.c
 void genCodeExprConst(ExprNodePtr expr);
