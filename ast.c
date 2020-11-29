@@ -20,7 +20,7 @@ ExprNodePtr makeExpr(OpSort opr, int value, SymEntryPtr symbol, ExprNodePtr left
     return node;
 }
 
-StmtNodePtr makeStmt(StmtSort sort, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2)
+StmtNodePtr makeStmt(StmtSort sort, StmtNodePtr next, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2)
 {
     StmtNodePtr node;
     if ((node = (StmtNodePtr)malloc(sizeof(StmtNode))) == NULL)
@@ -30,7 +30,7 @@ StmtNodePtr makeStmt(StmtSort sort, ExprNodePtr expr, StmtNodePtr st1, StmtNodeP
     }
 
     node->sort = sort;
-    node->next = NULL;
+    node->next = next;
     node->expr = expr;
     node->st1 = st1;
     node->st2 = st2;

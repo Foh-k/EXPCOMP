@@ -3,12 +3,6 @@
 #include "ast.h"
 #include "gen.h"
 
-extern FILE *af;
-extern int multcall;
-extern int divcall;
-
-int labelNo = 0;
-
 void genCodeExprConst(ExprNodePtr expr)
 {
     fprintf(af, "      ld16 #%d ; Const\n", expr->val);
@@ -32,7 +26,8 @@ void genCodeExprNot(ExprNodePtr expr)
     fprintf(af, "      ld #1\n");
     fprintf(af, "      jpz L%04d\n", labelNo);
     fprintf(af, "      ld #0\n");
-    fprintf(af, "L%04d:push\n", labelNo);
+    fprintf(af, "L%04d:\n", labelNo);
+    fprintf(af, "      push\n");
     labelNo++;
 }
 
@@ -84,7 +79,8 @@ void genCodeExprBlt(ExprNodePtr expr)
     fprintf(af, "      ld #1\n");
     fprintf(af, "      jps L%04d\n", labelNo);
     fprintf(af, "      ld #0\n");
-    fprintf(af, "L%04d:push\n", labelNo);
+    fprintf(af, "L%04d:\n", labelNo);
+    fprintf(af, "      push\n");
     labelNo++;
 }
 
@@ -98,7 +94,8 @@ void genCodeExprBeq(ExprNodePtr expr)
     fprintf(af, "      ld #1\n");
     fprintf(af, "      jpz L%04d\n", labelNo);
     fprintf(af, "      ld #0\n");
-    fprintf(af, "L%04d:push\n", labelNo);
+    fprintf(af, "L%04d:\n", labelNo);
+    fprintf(af, "      push\n");
     labelNo++;
 }
 
@@ -112,7 +109,8 @@ void genCodeExprBne(ExprNodePtr expr)
     fprintf(af, "      ld #0\n");
     fprintf(af, "      jpz L%04d\n", labelNo);
     fprintf(af, "      ld #1\n");
-    fprintf(af, "L%04d:push\n", labelNo);
+    fprintf(af, "L%04d:\n", labelNo);
+    fprintf(af, "      push\n");
     labelNo++;
 }
 
@@ -269,13 +267,15 @@ void genCodeExprInc(ExprNodePtr expr)
 {
     fprintf(af, "      ld G%04d\n", expr->sym->no);
     fprintf(af, "      inc acc\n");
+    fprintf(af, "      push\n");
     fprintf(af, "      st G%04d\n", expr->sym->no);
-}
+}   
 
 void genCodeExprDec(ExprNodePtr expr)
 {
     fprintf(af, "      ld G%04d\n", expr->sym->no);
     fprintf(af, "      inc dec\n");
+    fprintf(af, "      push\n");
     fprintf(af, "      st G%04d\n", expr->sym->no);
 }
 

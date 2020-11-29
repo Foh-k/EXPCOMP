@@ -48,7 +48,7 @@ typedef struct StmtNode
 
 // in ast.c
 ExprNodePtr makeExpr(OpSort opr, int value, SymEntryPtr symbol, ExprNodePtr left, ExprNodePtr right);
-StmtNodePtr makeStmt(StmtSort sort, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2);
+StmtNodePtr makeStmt(StmtSort sort, StmtNodePtr next, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2);
 
 // in gen.c
 void genCodeExprConst(ExprNodePtr expr);

@@ -1,6 +1,13 @@
 #pragma once
 
-#include "./ast.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "ast.h"
+
+extern FILE *af;
+extern int multcall;
+extern int divcall;
+extern int labelNo;
 
 // in gen.c
 void genCodeExprConst(ExprNodePtr expr);
@@ -31,3 +38,8 @@ void multLib(void);
 
 // in div.c
 void divLib(void);
+
+// in stmt.c
+void genCodeStmtExpr(StmtNodePtr stmt);
+void genCodeStmtIf(StmtNodePtr stmt);
+void genCodeStmt(StmtNodePtr stmt);

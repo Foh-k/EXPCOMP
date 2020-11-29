@@ -3,8 +3,9 @@
 #include "gen.h"
 
 FILE *af;
-extern int multcall;
-extern int divcall;
+int multcall;
+int divcall;
+int labelNo;
 
 void test1()
 {
@@ -47,6 +48,21 @@ void test7()
     genCodeExpr(mul);
 }
 
+void test8()
+{
+    SymEntry s = {SYM_GLOBAL, "flag", 1};
+    ExprNodePtr var = makeExpr(OP_VAR, 0, &s, NULL, NULL);
+    ExprNodePtr not = makeExpr(OP_NOT, 0, NULL, var, NULL);
+    ExprNodePtr c0 = makeExpr(OP_CONST, 0, NULL, NULL, NULL);
+    ExprNodePtr c1 = makeExpr(OP_CONST, 1, NULL, NULL, NULL);
+    ExprNodePtr as0 = makeExpr(OP_ASSSIGN, 0, &s, c0, NULL);
+    ExprNodePtr as1 = makeExpr(OP_ASSSIGN, 0, &s, c1, NULL);
+    StmtNodePtr expr1 = makeStmt(STMT_EXPR, NULL, as0, NULL, NULL);
+    StmtNodePtr expr2 = makeStmt(STMT_EXPR, NULL, as1, NULL, NULL);
+    StmtNodePtr ifnode = makeStmt(STMT_IF, NULL, not, expr1, expr2);
+    genCodeStmt(ifnode);
+}
+
 int main()
 {
     af = stdout;
@@ -54,7 +70,8 @@ int main()
     // test4();
     // test5();
     // test6();
-    test7();
+    // test7();
+    test8();
 
     if (multcall)
         multLib();
