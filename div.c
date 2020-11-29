@@ -12,7 +12,7 @@ void divLib(void)
     fprintf(af, "_div:  mv ixr, sp\n");
     fprintf(af, "       ld ixr, 2\n");
     fprintf(af, "       or #0\n");
-    fprintf(af, "       jsp _div1\n");
+    fprintf(af, "       jps _div1\n");
     fprintf(af, "       ld #0\n");
     fprintf(af, "       jp _div2\n");
     fprintf(af, "_div1: not\n");
@@ -44,7 +44,7 @@ void divLib(void)
     fprintf(af, "       lsl\n");
     fprintf(af, "       st ixr, -3\n");
     fprintf(af, "       jp _div_pre\n");
-    fprintf(af, "div_loop:\n");
+    fprintf(af, "_div_loop:\n");
     fprintf(af, "       ld ixr, 2\n");
     fprintf(af, "       sub ixr, 1\n");
     fprintf(af, "       jps _div5\n");

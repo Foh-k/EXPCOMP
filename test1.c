@@ -102,6 +102,8 @@ int main()
     // test8();
     test9();
 
+    fprintf(af, "      halt\n");
+
     if (multcall)
         multLib();
     if (divcall)

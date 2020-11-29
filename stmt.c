@@ -11,29 +11,33 @@ void genCodeStmtExpr(StmtNodePtr stmt)
 
 void genCodeStmtIf(StmtNodePtr stmt)
 {
+    int el = labelNo;
+    int end = labelNo + 1;
+    labelNo += 2;
     genCodeStmtExpr(stmt);
     fprintf(af, "      pop\n");
     fprintf(af, "      or #0\n");
-    fprintf(af, "      jpz ELSE%04d\n", labelNo);
+    fprintf(af, "      jpz ELSE%04d\n", el);
     genCodeStmt(stmt->st1);
-    fprintf(af, "      jp END%04d\n", labelNo + 1);
-    fprintf(af, "ELSE%04d:\n", labelNo);
+    fprintf(af, "      jp END%04d\n", end);
+    fprintf(af, "ELSE%04d:\n", el);
     genCodeStmt(stmt->st2);
-    fprintf(af, "END%04d:\n", labelNo + 1);
-    labelNo += 2;
+    fprintf(af, "END%04d:\n", end);
 }
 
 void genCodeStmtWhile(StmtNodePtr stmt)
 {
-    fprintf(af, "LOOP%04d\n", labelNo);
+    int loop = labelNo;
+    int end = labelNo + 1;
+    labelNo += 2;
+    fprintf(af, "LOOP%04d:\n", loop);
     genCodeStmtExpr(stmt);
     fprintf(af, "      pop\n");
     fprintf(af, "      or #0\n");
-    fprintf(af, "      jpz END%04d\n", labelNo + 1);
+    fprintf(af, "      jpz END%04d\n", end);
     genCodeStmt(stmt->st1);
-    fprintf(af, "      jp LOOP%04d\n", labelNo);
-    fprintf(af, "END%04d\n", labelNo + 1);
-    labelNo += 2;
+    fprintf(af, "      jp LOOP%04d\n", loop);
+    fprintf(af, "END%04d:\n", end);
 }
 
 void genCodeStmt(StmtNodePtr stmt)
