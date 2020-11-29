@@ -8,7 +8,7 @@ int multcall = 0;
 
 void multLib(void)
 {
-    fprintf(af, "; calculation library routine (multiply)");
+    fprintf(af, "; calculation library routine (multiply)\n");
     fprintf(af, "_mul:  mv ixr, sp\n");
     fprintf(af, "       ld #0\n");
     fprintf(af, "       push\n");
