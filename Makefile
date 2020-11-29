@@ -3,6 +3,9 @@ CFLAGS :=  -Wall -Wextra
 
 OBJ := ast.o
 OBJ += gen.o
+OBJ += genLib.o
+OBJ += genUnary.o
+OBJ += genBinary.o
 OBJ += stmt.o
 OBJ += mult.o
 OBJ += div.o

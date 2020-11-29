@@ -10,30 +10,36 @@ extern int divcall;
 extern int labelNo;
 
 // in gen.c
+void genCodeExpr(ExprNodePtr expr);
+
+// in genLib.c
 void genCodeExprConst(ExprNodePtr expr);
+void genCodeExprAssign(ExprNodePtr expr);
+void genCodeExprVar(ExprNodePtr expr);
+
+// in genUnary.c
 void genCodeExprUM(ExprNodePtr expr);
 void genCodeExprNot(ExprNodePtr expr);
-void genCodeExprVar(ExprNodePtr expr);
+void genCodeExprBnot(ExprNodePtr expr);
+void genCodeExprInc(ExprNodePtr expr);
+void genCodeExprDec(ExprNodePtr expr);
+
+// in genBinary.c
 void genCodeExprAdd(ExprNodePtr expr);
 void genCodeExprSub(ExprNodePtr expr);
 void genCodeExprBlt(ExprNodePtr expr);
 void genCodeExprBeq(ExprNodePtr expr);
 void genCodeExprBne(ExprNodePtr expr);
-void genCodeExpr(ExprNodePtr expr);
 void genCodeExprMult(ExprNodePtr expr);
 void genCodeExprDiv(ExprNodePtr expr);
 void genCodeExprMod(ExprNodePtr expr);
-void genCodeExprAssign(ExprNodePtr expr);
 void genCodeExprLor(ExprNodePtr expr);
 void genCodeExprLand(ExprNodePtr expr);
 void genCodeExprBor(ExprNodePtr expr);
 void genCodeExprBand(ExprNodePtr expr);
 void genCodeExprXor(ExprNodePtr expr);
-void genCodeExprBnot(ExprNodePtr expr);
 void genCodeExprLshift(ExprNodePtr expr);
 void genCodeExprRshift(ExprNodePtr expr);
-void genCodeExprInc(ExprNodePtr expr);
-void genCodeExprDec(ExprNodePtr expr);
 
 // in mult.c
 void multLib(void);
