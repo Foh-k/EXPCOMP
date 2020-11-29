@@ -180,6 +180,105 @@ void genCodeExprLand(ExprNodePtr expr)
     labelNo += 3;
 }
 
+void genCodeExprBor(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      or ixr, 0\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      inc sp\n");
+}
+
+void genCodeExprBand(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      and ixr, 0\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      inc sp\n");
+}
+
+void genCodeExprXor(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      eor ixr, 0\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      inc sp\n");
+}
+
+void genCodeExprBnot(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    fprintf(af, "      pop\n");
+    fprintf(af, "      not\n");
+    fprintf(af, "      push\n");
+}
+
+void genCodeExprLshift(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 0\n");
+    fprintf(af, "      or #0\n");
+    fprintf(af, "      jpz L%04d\n", labelNo + 1);
+    fprintf(af, "L%04d:\n", labelNo);
+    fprintf(af, "      st ixr, 0");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      lsl\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      ld ixr, 0\n");
+    fprintf(af, "      dec acc\n");
+    fprintf(af, "      jpz L%04d\n", labelNo + 1);
+    fprintf(af, "      jp L%04d\n", labelNo);
+    fprintf(af, "L%04d:\n", labelNo + 1);
+    fprintf(af, "      inc sp\n");
+    labelNo += 2;
+}
+
+void genCodeExprRshift(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 0\n");
+    fprintf(af, "      or #0\n");
+    fprintf(af, "      jpz L%04d\n", labelNo + 1);
+    fprintf(af, "L%04d:\n", labelNo);
+    fprintf(af, "      st ixr, 0");
+    fprintf(af, "      ld ixr, 1\n");
+    fprintf(af, "      lsr\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      ld ixr, 0\n");
+    fprintf(af, "      dec acc\n");
+    fprintf(af, "      jpz L%04d\n", labelNo + 1);
+    fprintf(af, "      jp L%04d\n", labelNo);
+    fprintf(af, "L%04d:\n", labelNo + 1);
+    fprintf(af, "      inc sp\n");
+    labelNo += 2;
+}
+
+void genCodeExprInc(ExprNodePtr expr)
+{
+    fprintf(af, "      ld G%04d\n", expr->sym->no);
+    fprintf(af, "      inc acc\n");
+    fprintf(af, "      st G%04d\n", expr->sym->no);
+}
+
+void genCodeExprDec(ExprNodePtr expr)
+{
+    fprintf(af, "      ld G%04d\n", expr->sym->no);
+    fprintf(af, "      inc dec\n");
+    fprintf(af, "      st G%04d\n", expr->sym->no);
+}
+
 void genCodeExpr(ExprNodePtr expr)
 {
     switch (expr->op)
@@ -230,6 +329,38 @@ void genCodeExpr(ExprNodePtr expr)
 
     case OP_ASSSIGN:
         genCodeExprAssign(expr);
+        break;
+
+    case OP_BOR:
+        genCodeExprBor(expr);
+        break;
+
+    case OP_BAND:
+        genCodeExprBand(expr);
+        break;
+
+    case OP_XOR:
+        genCodeExprXor(expr);
+        break;
+
+    case OP_BNOT:
+        genCodeExprBnot(expr);
+        break;
+
+    case OP_LSHIFT:
+        genCodeExprLshift(expr);
+        break;
+
+    case OP_RSHIFT:
+        genCodeExprRshift(expr);
+        break;
+
+    case OP_INC:
+        genCodeExprInc(expr);
+        break;
+
+    case OP_DEC:
+        genCodeExprDec(expr);
         break;
 
     default:
