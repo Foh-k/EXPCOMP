@@ -14,7 +14,7 @@ void genCodeStmtIf(StmtNodePtr stmt)
     int el = labelNo;
     int end = labelNo + 1;
     labelNo += 2;
-    genCodeStmtExpr(stmt);
+    genCodeExpr(stmt->expr);
     fprintf(af, "      pop\n");
     fprintf(af, "      or #0\n");
     fprintf(af, "      jpz ELSE%04d\n", el);
@@ -31,7 +31,7 @@ void genCodeStmtWhile(StmtNodePtr stmt)
     int end = labelNo + 1;
     labelNo += 2;
     fprintf(af, "LOOP%04d:\n", loop);
-    genCodeStmtExpr(stmt);
+    genCodeExpr(stmt->expr);
     fprintf(af, "      pop\n");
     fprintf(af, "      or #0\n");
     fprintf(af, "      jpz END%04d\n", end);

@@ -1,7 +1,7 @@
 #pragma once
 
 typedef enum {
-    OP_ASSSIGN, /* Assignment */
+    OP_ASSIGN, /* Assignment */
     OP_LOR, OP_LAND, OP_BLT, OP_BEQ, OP_BNE, /* Binary Operators */
     OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD,
     OP_BAND, OP_BOR, OP_XOR, OP_LSHIFT, OP_RSHIFT,

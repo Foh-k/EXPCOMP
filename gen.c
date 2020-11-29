@@ -80,7 +80,8 @@ void genCodeExprBlt(ExprNodePtr expr)
     fprintf(af, "      jps L%04d\n", labelNo);
     fprintf(af, "      ld #0\n");
     fprintf(af, "L%04d:\n", labelNo);
-    fprintf(af, "      push\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      inc sp\n");
     labelNo++;
 }
 
@@ -95,7 +96,8 @@ void genCodeExprBeq(ExprNodePtr expr)
     fprintf(af, "      jpz L%04d\n", labelNo);
     fprintf(af, "      ld #0\n");
     fprintf(af, "L%04d:\n", labelNo);
-    fprintf(af, "      push\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      inc sp\n");
     labelNo++;
 }
 
@@ -110,7 +112,8 @@ void genCodeExprBne(ExprNodePtr expr)
     fprintf(af, "      jpz L%04d\n", labelNo);
     fprintf(af, "      ld #1\n");
     fprintf(af, "L%04d:\n", labelNo);
-    fprintf(af, "      push\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      inc sp\n");
     labelNo++;
 }
 
@@ -128,10 +131,10 @@ void genCodeExprDiv(ExprNodePtr expr)
     genCodeExpr(expr->sub1);
     genCodeExpr(expr->sub2);
     fprintf(af, "      call _div\n");
-    fprintf(af, "      mv ixr, sp");
-    fprintf(af, "      ld ixr, 0");
-    fprintf(af, "      st ixr, 1");
-    fprintf(af, "      inc sp");
+    fprintf(af, "      mv ixr, sp\n");
+    fprintf(af, "      ld ixr, 0\n");
+    fprintf(af, "      st ixr, 1\n");
+    fprintf(af, "      inc sp\n");
     divcall = 1;
 }
 
@@ -140,7 +143,7 @@ void genCodeExprMod(ExprNodePtr expr)
     genCodeExpr(expr->sub1);
     genCodeExpr(expr->sub2);
     fprintf(af, "      call _div\n");
-    fprintf(af, "      inc sp");
+    fprintf(af, "      inc sp\n");
     divcall = 1;
 }
 
@@ -347,7 +350,7 @@ void genCodeExpr(ExprNodePtr expr)
         genCodeExprMod(expr);
         break;
 
-    case OP_ASSSIGN:
+    case OP_ASSIGN:
         genCodeExprAssign(expr);
         break;
 

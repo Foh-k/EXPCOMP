@@ -6,6 +6,7 @@ FILE *af;
 int multcall;
 int divcall;
 int labelNo;
+int varNo;
 
 void test1()
 {
@@ -19,7 +20,9 @@ void test4()
 {
     SymEntry s1 = {SYM_GLOBAL, "hanoicount", 7};
     ExprNodePtr e1 = makeExpr(OP_VAR, 0, &s1, NULL, NULL);
-    genCodeExpr(e1);
+    // genCodeExpr(e1);
+    StmtNodePtr st = makeStmt(STMT_EXPR, NULL, e1, NULL, NULL);
+    genCodeStmt(st);
 }
 
 void test5()
@@ -55,8 +58,8 @@ void test8()
     ExprNodePtr not = makeExpr(OP_NOT, 0, NULL, var, NULL);
     ExprNodePtr c0 = makeExpr(OP_CONST, 0, NULL, NULL, NULL);
     ExprNodePtr c1 = makeExpr(OP_CONST, 1, NULL, NULL, NULL);
-    ExprNodePtr as0 = makeExpr(OP_ASSSIGN, 0, &s, c0, NULL);
-    ExprNodePtr as1 = makeExpr(OP_ASSSIGN, 0, &s, c1, NULL);
+    ExprNodePtr as0 = makeExpr(OP_ASSIGN, 0, &s, c0, NULL);
+    ExprNodePtr as1 = makeExpr(OP_ASSIGN, 0, &s, c1, NULL);
     StmtNodePtr expr1 = makeStmt(STMT_EXPR, NULL, as0, NULL, NULL);
     StmtNodePtr expr2 = makeStmt(STMT_EXPR, NULL, as1, NULL, NULL);
     StmtNodePtr ifnode = makeStmt(STMT_IF, NULL, not, expr1, expr2);
@@ -65,20 +68,20 @@ void test8()
 
 void test9()
 {
-    SymEntry s = {SYM_GLOBAL, "sum", 1};
-    SymEntry k = {SYM_GLOBAL, "k", 2};
+    SymEntry s = {SYM_GLOBAL, "sum", varNo++};
+    SymEntry k = {SYM_GLOBAL, "k", varNo++};
     ExprNodePtr c0 = makeExpr(OP_CONST, 0, NULL, NULL, NULL);
     ExprNodePtr c1 = makeExpr(OP_CONST, 1, NULL, NULL, NULL);
     ExprNodePtr c2 = makeExpr(OP_CONST, 2, NULL, NULL, NULL);
     ExprNodePtr c10 = makeExpr(OP_CONST, 10, NULL, NULL, NULL);
     ExprNodePtr vars = makeExpr(OP_VAR, 0, &s, NULL, NULL);
     ExprNodePtr vark = makeExpr(OP_VAR, 0, &k, NULL, NULL);
-    ExprNodePtr sinit = makeExpr(OP_ASSSIGN, 0, &s, c0, NULL);
-    ExprNodePtr kinit = makeExpr(OP_ASSSIGN, 0, &k, c1, NULL);
+    ExprNodePtr sinit = makeExpr(OP_ASSIGN, 0, &s, c0, NULL);
+    ExprNodePtr kinit = makeExpr(OP_ASSIGN, 0, &k, c1, NULL);
     ExprNodePtr lt = makeExpr(OP_BLT, 0, NULL, vark, c10);
     ExprNodePtr mod = makeExpr(OP_MOD, 0, NULL, vark, c2);
     ExprNodePtr add = makeExpr(OP_ADD, 0, NULL, vars, vark);
-    ExprNodePtr assgn = makeExpr(OP_ASSSIGN, 0, &s, add, 0);
+    ExprNodePtr assgn = makeExpr(OP_ASSIGN, 0, &s, add, NULL);
     ExprNodePtr inck = makeExpr(OP_INC, 0, &k, vark, NULL);
 
     StmtNodePtr st4 = makeStmt(STMT_EXPR, NULL, inck, NULL, NULL);
@@ -103,6 +106,8 @@ int main()
     test9();
 
     fprintf(af, "      halt\n");
+    fprintf(af, "      G0000: .space 1 ; sum\n");
+    fprintf(af, "      G0001: .space 1 ; k\n");
 
     if (multcall)
         multLib();
