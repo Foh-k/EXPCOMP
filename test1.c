@@ -63,6 +63,34 @@ void test8()
     genCodeStmt(ifnode);
 }
 
+void test9()
+{
+    SymEntry s = {SYM_GLOBAL, "sum", 1};
+    SymEntry k = {SYM_GLOBAL, "k", 2};
+    ExprNodePtr c0 = makeExpr(OP_CONST, 0, NULL, NULL, NULL);
+    ExprNodePtr c1 = makeExpr(OP_CONST, 1, NULL, NULL, NULL);
+    ExprNodePtr c2 = makeExpr(OP_CONST, 2, NULL, NULL, NULL);
+    ExprNodePtr c10 = makeExpr(OP_CONST, 10, NULL, NULL, NULL);
+    ExprNodePtr vars = makeExpr(OP_VAR, 0, &s, NULL, NULL);
+    ExprNodePtr vark = makeExpr(OP_VAR, 0, &k, NULL, NULL);
+    ExprNodePtr sinit = makeExpr(OP_ASSSIGN, 0, &s, c0, NULL);
+    ExprNodePtr kinit = makeExpr(OP_ASSSIGN, 0, &k, c1, NULL);
+    ExprNodePtr lt = makeExpr(OP_BLT, 0, NULL, vark, c10);
+    ExprNodePtr mod = makeExpr(OP_MOD, 0, NULL, vark, c2);
+    ExprNodePtr add = makeExpr(OP_ADD, 0, NULL, vars, vark);
+    ExprNodePtr assgn = makeExpr(OP_ASSSIGN, 0, &s, add, 0);
+    ExprNodePtr inck = makeExpr(OP_INC, 0, &k, vark, NULL);
+
+    StmtNodePtr st4 = makeStmt(STMT_EXPR, NULL, inck, NULL, NULL);
+    StmtNodePtr st3 = makeStmt(STMT_EXPR, NULL, assgn, NULL, NULL);
+    StmtNodePtr ifst = makeStmt(STMT_IF, st4, mod, st3, NULL);
+    StmtNodePtr whst = makeStmt(STMT_WHILE, NULL, lt, ifst, NULL);
+    StmtNodePtr st2 = makeStmt(STMT_EXPR, whst, kinit, NULL, NULL);
+    StmtNodePtr st1 = makeStmt(STMT_EXPR, st2, sinit, NULL, NULL);
+
+    genCodeStmt(st1);
+}
+
 int main()
 {
     af = stdout;
@@ -71,7 +99,8 @@ int main()
     // test5();
     // test6();
     // test7();
-    test8();
+    // test8();
+    test9();
 
     if (multcall)
         multLib();

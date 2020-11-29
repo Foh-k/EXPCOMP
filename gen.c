@@ -119,6 +119,7 @@ void genCodeExprMult(ExprNodePtr expr)
     genCodeExpr(expr->sub1);
     genCodeExpr(expr->sub2);
     fprintf(af, "      call _mult\n");
+    fprintf(af, "      inc sp");
     multcall = 1;
 }
 
@@ -127,6 +128,19 @@ void genCodeExprDiv(ExprNodePtr expr)
     genCodeExpr(expr->sub1);
     genCodeExpr(expr->sub2);
     fprintf(af, "      call _div\n");
+    fprintf(af, "      mv ixr, sp");
+    fprintf(af, "      ld ixr, 0");
+    fprintf(af, "      st ixr, 1");
+    fprintf(af, "      inc sp");
+    divcall = 1;
+}
+
+void genCodeExprMod(ExprNodePtr expr)
+{
+    genCodeExpr(expr->sub1);
+    genCodeExpr(expr->sub2);
+    fprintf(af, "      call _div\n");
+    fprintf(af, "      inc sp");
     divcall = 1;
 }
 
@@ -265,16 +279,18 @@ void genCodeExprRshift(ExprNodePtr expr)
 
 void genCodeExprInc(ExprNodePtr expr)
 {
-    fprintf(af, "      ld G%04d\n", expr->sym->no);
+    genCodeExpr(expr->sub1);
+    fprintf(af, "      pop\n");
     fprintf(af, "      inc acc\n");
     fprintf(af, "      push\n");
     fprintf(af, "      st G%04d\n", expr->sym->no);
-}   
+}
 
 void genCodeExprDec(ExprNodePtr expr)
 {
-    fprintf(af, "      ld G%04d\n", expr->sym->no);
-    fprintf(af, "      inc dec\n");
+    genCodeExpr(expr->sub1);
+    fprintf(af, "      pop\n");
+    fprintf(af, "      dec acc\n");
     fprintf(af, "      push\n");
     fprintf(af, "      st G%04d\n", expr->sym->no);
 }
@@ -325,6 +341,10 @@ void genCodeExpr(ExprNodePtr expr)
 
     case OP_DIV:
         genCodeExprDiv(expr);
+        break;
+
+    case OP_MOD:
+        genCodeExprMod(expr);
         break;
 
     case OP_ASSSIGN:

@@ -21,6 +21,8 @@ void genCodeExprBeq(ExprNodePtr expr);
 void genCodeExprBne(ExprNodePtr expr);
 void genCodeExpr(ExprNodePtr expr);
 void genCodeExprMult(ExprNodePtr expr);
+void genCodeExprDiv(ExprNodePtr expr);
+void genCodeExprMod(ExprNodePtr expr);
 void genCodeExprAssign(ExprNodePtr expr);
 void genCodeExprLor(ExprNodePtr expr);
 void genCodeExprLand(ExprNodePtr expr);
