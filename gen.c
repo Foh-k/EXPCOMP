@@ -354,6 +354,14 @@ void genCodeExpr(ExprNodePtr expr)
         genCodeExprAssign(expr);
         break;
 
+    case OP_LOR:
+        genCodeExprLor(expr);
+        break;
+        
+    case OP_LAND:
+        genCodeExprLand(expr);
+        break;
+
     case OP_BOR:
         genCodeExprBor(expr);
         break;
