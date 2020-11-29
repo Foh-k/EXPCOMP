@@ -42,4 +42,5 @@ void divLib(void);
 // in stmt.c
 void genCodeStmtExpr(StmtNodePtr stmt);
 void genCodeStmtIf(StmtNodePtr stmt);
+void genCodeStmtWhile(StmtNodePtr stmt);
 void genCodeStmt(StmtNodePtr stmt);

@@ -23,6 +23,19 @@ void genCodeStmtIf(StmtNodePtr stmt)
     labelNo += 2;
 }
 
+void genCodeStmtWhile(StmtNodePtr stmt)
+{
+    fprintf(af, "LOOP%04d\n", labelNo);
+    genCodeStmtExpr(stmt);
+    fprintf(af, "      pop\n");
+    fprintf(af, "      or #0\n");
+    fprintf(af, "      jpz END%04d\n", labelNo + 1);
+    genCodeStmt(stmt->st1);
+    fprintf(af, "      jp LOOP%04d\n", labelNo);
+    fprintf(af, "END%04d\n", labelNo + 1);
+    labelNo += 2;
+}
+
 void genCodeStmt(StmtNodePtr stmt)
 {
     while (stmt != NULL)
@@ -35,6 +48,10 @@ void genCodeStmt(StmtNodePtr stmt)
 
         case STMT_IF:
             genCodeStmtIf(stmt);
+            break;
+
+        case STMT_WHILE:
+            genCodeStmtWhile(stmt);
             break;
 
         default:
