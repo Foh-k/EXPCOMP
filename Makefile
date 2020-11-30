@@ -11,6 +11,7 @@ OBJ += stmt.o
 OBJ += mult.o
 OBJ += div.o
 OBJ += test1.o
+OBJ += callFunc.o
 
 HFILE := ast.h
 HFILE += gen.h

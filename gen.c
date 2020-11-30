@@ -100,7 +100,7 @@ void genCodeExpr(ExprNodePtr expr)
         break;
 
     case OP_FUNCALL:
-        genCodeExprFunc(expr);
+        genCodeExprFuncall(expr);
         break;
 
     default:

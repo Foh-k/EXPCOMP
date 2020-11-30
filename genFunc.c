@@ -3,7 +3,7 @@
 #include "ast.h"
 #include "gen.h"
 
-void genCodeExprFunc(ExprNodePtr expr)
+void genCodeExprFuncall(ExprNodePtr expr)
 {
     fprintf(af, "      dec sp\n");
     // 引数を持つ

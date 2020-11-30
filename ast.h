@@ -67,3 +67,6 @@ ExprNodePtr makeExpr(OpSort opr, int value, SymEntryPtr symbol, ExprNodePtr left
 StmtNodePtr makeStmt(StmtSort sort, StmtNodePtr next, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2);
 SymEntryPtr makeSym(SymbolSort sort, char* name, int no, int nParam, int nVar, SymEntryPtr belong);
 DefNodePtr makeDef(DefSort sort, SymEntryPtr sym, StmtNodePtr body);
+
+// 関数呼び出し時に利用
+extern SymEntryPtr curfunc;

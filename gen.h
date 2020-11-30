@@ -42,7 +42,7 @@ void genCodeExprLshift(ExprNodePtr expr);
 void genCodeExprRshift(ExprNodePtr expr);
 
 // in genFunc.c
-void genCodeExprFunc(ExprNodePtr expr);
+void genCodeExprFuncall(ExprNodePtr expr);
 
 // in mult.c
 void multLib(void);
@@ -55,3 +55,6 @@ void genCodeStmtExpr(StmtNodePtr stmt);
 void genCodeStmtIf(StmtNodePtr stmt);
 void genCodeStmtWhile(StmtNodePtr stmt);
 void genCodeStmt(StmtNodePtr stmt);
+
+// in callFunc.c
+void genCodeFunc(DefNodePtr func);
