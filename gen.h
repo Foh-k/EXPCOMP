@@ -64,4 +64,4 @@ void genCodeFunc(DefNodePtr func);
 
 // in io.c
 int in();
-int out(int n);
+int out();
