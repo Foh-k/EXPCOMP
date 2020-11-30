@@ -11,14 +11,16 @@ typedef enum {
 } OpSort; /* Sort of operators */
 
 typedef enum {
-    SYM_GLOBAL
+    SYM_VAR, SYM_PARAM, SYM_FUNC
 } SymbolSort;
 
 typedef struct SymEntry *SymEntryPtr;
 typedef struct SymEntry{
-    SymbolSort class;
+    SymbolSort sort;
     char *name;
     int no;
+    int nParam, nVar;
+    SymEntryPtr belong;
 } SymEntry;
 
 typedef struct ExprNode *ExprNodePtr;
@@ -49,6 +51,7 @@ typedef struct StmtNode
 // in ast.c
 ExprNodePtr makeExpr(OpSort opr, int value, SymEntryPtr symbol, ExprNodePtr left, ExprNodePtr right);
 StmtNodePtr makeStmt(StmtSort sort, StmtNodePtr next, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2);
+SymEntryPtr makeSym(SymbolSort sort, char* name, int no, int nParam, int nVar, SymEntryPtr belong);
 
 // in gen.c
 void genCodeExprConst(ExprNodePtr expr);

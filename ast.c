@@ -37,3 +37,22 @@ StmtNodePtr makeStmt(StmtSort sort, StmtNodePtr next, ExprNodePtr expr, StmtNode
 
     return node;
 }
+
+SymEntryPtr makeSym(SymbolSort sort, char* name, int no, int nParam, int nVar, SymEntryPtr belong)
+{
+    SymEntryPtr entry;
+    if((entry = (SymEntryPtr)malloc(sizeof(SymEntry))) == NULL)
+    {
+        fprintf(stderr, "Malloc Failed in makeSym()");
+        exit(1);
+    }
+
+    entry->sort = sort;
+    entry->name = name;
+    entry->no = no;
+    entry->nParam = nParam;
+    entry->nVar = nVar;
+    entry->belong = belong;
+
+    return entry;
+}
