@@ -7,7 +7,8 @@ typedef enum {
     OP_BAND, OP_BOR, OP_XOR, OP_LSHIFT, OP_RSHIFT,
     OP_NOT, OP_UM, OP_BNOT, OP_INC, OP_DEC, /* Unary Operators */
     OP_VAR, /* Variable Reference */
-    OP_CONST /* Literal */
+    OP_CONST, /* Literal */
+    OP_ALIST, OP_FUNCALL
 } OpSort; /* Sort of operators */
 
 typedef enum {

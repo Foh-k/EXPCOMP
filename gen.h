@@ -41,6 +41,9 @@ void genCodeExprXor(ExprNodePtr expr);
 void genCodeExprLshift(ExprNodePtr expr);
 void genCodeExprRshift(ExprNodePtr expr);
 
+// in genFunc.c
+void genCodeExprFunc(ExprNodePtr expr);
+
 // in mult.c
 void multLib(void);
 

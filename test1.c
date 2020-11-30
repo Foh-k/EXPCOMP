@@ -10,15 +10,15 @@ int varNo;
 
 void test()
 {
-    SymEntryPtr fib = makeSym(SYM_FUNC, "fib", 0, 1, 2, NULL);
-    SymEntryPtr n = makeSym(SYM_VAR, "n", -2, 0, 0, fib);
-    SymEntryPtr m = makeSym(SYM_VAR, "m", -1, 0, 0, fib);
+    SymEntryPtr fib = makeSym(SYM_FUNC, "fib(k-2)", 15, 1, 2, NULL);
     SymEntryPtr k = makeSym(SYM_PARAM, "k", 1, 0, 0, fib);
-    ExprNodePtr varm = makeExpr(OP_VAR, 0, m, NULL, NULL);
+
+    ExprNodePtr c2 = makeExpr(OP_CONST, 2, NULL, NULL, NULL);
     ExprNodePtr vark = makeExpr(OP_VAR, 0, k, NULL, NULL);
-    ExprNodePtr add = makeExpr(OP_ADD, 0, NULL, varm, vark);
-    ExprNodePtr assg = makeExpr(OP_ASSIGN, 0, n, add, NULL);
-    StmtNodePtr st = makeStmt(STMT_EXPR, NULL, assg, NULL, NULL);
+    ExprNodePtr minus = makeExpr(OP_SUB, 0, NULL, vark, c2);
+    ExprNodePtr l1 = makeExpr(OP_ALIST, 0, fib, minus, NULL);
+    ExprNodePtr func = makeExpr(OP_FUNCALL, 0, fib, l1, NULL);
+    StmtNodePtr st = makeStmt(STMT_EXPR, NULL, func, NULL, NULL);
     genCodeStmt(st);
 }
 

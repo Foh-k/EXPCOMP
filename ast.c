@@ -56,3 +56,4 @@ SymEntryPtr makeSym(SymbolSort sort, char* name, int no, int nParam, int nVar, S
 
     return entry;
 }
+        

@@ -99,6 +99,10 @@ void genCodeExpr(ExprNodePtr expr)
         genCodeExprDec(expr);
         break;
 
+    case OP_FUNCALL:
+        genCodeExprFunc(expr);
+        break;
+
     default:
         fprintf(stderr, "Undefined Expression\n");
         exit(1);
