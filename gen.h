@@ -8,6 +8,8 @@ extern FILE *af;
 extern int multcall;
 extern int divcall;
 extern int labelNo;
+// 関数呼び出し時に利用
+extern SymEntryPtr curfunc;
 
 // in gen.c
 void genCodeExpr(ExprNodePtr expr);
@@ -55,6 +57,11 @@ void genCodeStmtExpr(StmtNodePtr stmt);
 void genCodeStmtIf(StmtNodePtr stmt);
 void genCodeStmtWhile(StmtNodePtr stmt);
 void genCodeStmt(StmtNodePtr stmt);
+void genCodeStmtReturn();
 
 // in callFunc.c
 void genCodeFunc(DefNodePtr func);
+
+// in io.c
+int in();
+int out(int n);
