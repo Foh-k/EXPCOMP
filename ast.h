@@ -47,13 +47,23 @@ typedef struct StmtNode
     StmtNodePtr st1, st2;
 } StmtNode;
 
+typedef enum {
+    DEF_FUNC, DEF_GLOBAL, PROTOTYPE
+} DefSort;
+
+typedef struct DefNode *DefNodePtr;
+typedef struct DefNode
+{
+    DefSort sort;
+    SymEntryPtr sym;
+    DefNodePtr next;
+    StmtNodePtr body;
+} DefNode;
+
 
 
 // in ast.c
 ExprNodePtr makeExpr(OpSort opr, int value, SymEntryPtr symbol, ExprNodePtr left, ExprNodePtr right);
 StmtNodePtr makeStmt(StmtSort sort, StmtNodePtr next, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2);
 SymEntryPtr makeSym(SymbolSort sort, char* name, int no, int nParam, int nVar, SymEntryPtr belong);
-
-// in gen.c
-void genCodeExprConst(ExprNodePtr expr);
-void genCodeExpr(ExprNodePtr expr);
+DefNodePtr makeDef(DefSort sort, SymEntryPtr sym, StmtNodePtr body);

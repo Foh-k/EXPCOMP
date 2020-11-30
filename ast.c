@@ -43,7 +43,7 @@ SymEntryPtr makeSym(SymbolSort sort, char* name, int no, int nParam, int nVar, S
     SymEntryPtr entry;
     if((entry = (SymEntryPtr)malloc(sizeof(SymEntry))) == NULL)
     {
-        fprintf(stderr, "Malloc Failed in makeSym()");
+        fprintf(stderr, "Malloc Failed in makeSym()\n");
         exit(1);
     }
 
@@ -56,4 +56,20 @@ SymEntryPtr makeSym(SymbolSort sort, char* name, int no, int nParam, int nVar, S
 
     return entry;
 }
-        
+
+DefNodePtr makeDef(DefSort sort, SymEntryPtr sym, StmtNodePtr body)
+{
+    DefNodePtr node;
+    if((node = (DefNodePtr)malloc(sizeof(DefNode))) == NULL)
+    {
+        fprintf(stderr, "Malloc Failed in makeDef()\n");
+        exit(1);
+    }
+
+    node->sort = sort;
+    node->sym = sym;
+    node->body = body;
+    node->next = NULL;
+
+    return node;
+}
