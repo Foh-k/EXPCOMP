@@ -58,16 +58,19 @@ void genCodeStmtExpr(StmtNodePtr stmt);
 void genCodeStmtIf(StmtNodePtr stmt);
 void genCodeStmtWhile(StmtNodePtr stmt);
 void genCodeStmt(StmtNodePtr stmt);
-void genCodeStmtReturn();
+void genCodeStmtReturn(StmtNodePtr stmt);
 
 // in callFunc.c
 void genCodeFunc(DefNodePtr func);
 
 // in io.c
-void in(DefNodePtr func);
-void out(DefNodePtr func);
+void in();
+void out();
 
 
 // in globals.c
 void genCodeGlobals();
 void genCodeFuncs();
+
+// in runtime.c
+void genCode();

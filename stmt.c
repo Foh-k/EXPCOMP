@@ -40,8 +40,9 @@ void genCodeStmtWhile(StmtNodePtr stmt)
     fprintf(af, "END%04d:\n", end);
 }
 
-void genCodeStmtReturn()
+void genCodeStmtReturn(StmtNodePtr stmt)
 {
+    genCodeExpr(stmt->expr);
     fprintf(af, "      jp E%04d\n", curfunc->no);
 }
 
@@ -64,7 +65,7 @@ void genCodeStmt(StmtNodePtr stmt)
             break;
         
         case STMT_RETURN:
-            genCodeStmtReturn();
+            genCodeStmtReturn(stmt);
             break;
 
         default:

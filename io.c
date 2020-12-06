@@ -3,23 +3,22 @@
 #include "ast.h"
 #include "gen.h"
 
-void in(DefNodePtr func)
+void in()
 {
     // FP操作は無意味なので省略
-    fprintf(af, "F%04d:    ; call in()\n", func->sym->no);
+    fprintf(af, "F0000d:    ; call in()\n");
     fprintf(af, "      mv ixr, sp\n");
     fprintf(af, "      in #0\n");
     fprintf(af, "      st ixr, 2\n");
     fprintf(af, "      ret\n");
 }
 
-void out(DefNodePtr func)
+void out()
 {
-    // in同様FP操作なし
-    fprintf(af, "F%04d:    ; call out()\n", func->sym->no);
+    // FP操作は無意味なので省略
+    fprintf(af, "F0001d:    ; call in()\n");
     fprintf(af, "      mv ixr, sp\n");
-    fprintf(af, "      ld ixr, 2\n");
+    fprintf(af, "      ld ixr, #2");
     fprintf(af, "      out #0\n");
-    fprintf(af, "      st ixr, 3\n");
     fprintf(af, "      ret\n");
 }

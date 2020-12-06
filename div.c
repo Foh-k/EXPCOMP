@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 extern FILE *af;
-int divcall = 0;
 
 void divLib(void)
 {

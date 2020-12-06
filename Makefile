@@ -14,6 +14,7 @@ OBJ += test1.o
 OBJ += callFunc.o
 OBJ += io.o
 OBJ += globals.o
+OBJ += runtime.o
 
 HFILE := ast.h
 HFILE += gen.h

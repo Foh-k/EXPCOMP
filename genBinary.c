@@ -79,7 +79,6 @@ void genCodeExprMult(ExprNodePtr expr)
     genCodeExpr(expr->sub2);
     fprintf(af, "      call _mult\n");
     fprintf(af, "      inc sp");
-    multcall = 1;
 }
 
 void genCodeExprDiv(ExprNodePtr expr)
@@ -91,7 +90,6 @@ void genCodeExprDiv(ExprNodePtr expr)
     fprintf(af, "      ld ixr, 0\n");
     fprintf(af, "      st ixr, 1\n");
     fprintf(af, "      inc sp\n");
-    divcall = 1;
 }
 
 void genCodeExprMod(ExprNodePtr expr)
@@ -100,7 +98,6 @@ void genCodeExprMod(ExprNodePtr expr)
     genCodeExpr(expr->sub2);
     fprintf(af, "      call _div\n");
     fprintf(af, "      inc sp\n");
-    divcall = 1;
 }
 
 void genCodeExprLor(ExprNodePtr expr)

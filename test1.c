@@ -2,39 +2,64 @@
 #include "ast.h"
 #include "gen.h"
 
+#define ECONST(k) makeExpr(OP_CONST, k, NULL, NULL, NULL)
+#define EVAR(p) makeExpr(OP_VAR, 0, p, NULL, NULL)
+#define EBIN(op, l, r) makeExpr(op, 0, NULL, l, r)
+#define SEXPR(e) makeStmt(STMT_EXPR, NULL, e, NULL, NULL)
+#define IN(var) SEXPR(makeExpr(OP_ASSIGN, 0, var, makeExpr(OP_FUNCALL, 0, fin, NULL, NULL), NULL))
+#define OUT(f) SEXPR(makeExpr(OP_FUNCALL, 0, fout, makeExpr(OP_ALIST, 0, NULL, f, NULL), NULL))
+
 FILE *af;
-int multcall;
-int divcall;
-int labelNo;
-int varNo;
+DefNodePtr sourcedefs;
 
 void test()
 {
-    SymEntryPtr fib = makeSym(SYM_FUNC, "fib(k-2)", 15, 1, 2, NULL);
-    SymEntryPtr k = makeSym(SYM_PARAM, "k", 1, 0, 0, fib);
+    SymEntryPtr fin = makeSym(SYM_FUNC, "in", 0, 0, 0, NULL);
+    SymEntryPtr fout = makeSym(SYM_FUNC, "out", 1, 1, 0, NULL);
+    SymEntryPtr fib = makeSym(SYM_FUNC, "fib", 2, 1, 0, NULL);
+    SymEntryPtr param_k = makeSym(SYM_PARAM, "k", 1, 0, 0, fib);
 
-    ExprNodePtr c2 = makeExpr(OP_CONST, 2, NULL, NULL, NULL);
-    ExprNodePtr vark = makeExpr(OP_VAR, 0, k, NULL, NULL);
-    ExprNodePtr minus = makeExpr(OP_SUB, 0, NULL, vark, c2);
-    ExprNodePtr l1 = makeExpr(OP_ALIST, 0, fib, minus, NULL);
-    ExprNodePtr func = makeExpr(OP_FUNCALL, 0, fib, l1, NULL);
-    StmtNodePtr st = makeStmt(STMT_EXPR, NULL, func, NULL, NULL);
-    genCodeStmt(st);
+    StmtNodePtr l2 = makeStmt(STMT_IF,
+                              NULL,
+                              EBIN(OP_BLT, EVAR(param_k), ECONST(2)),
+                              makeStmt(STMT_RETURN, NULL, ECONST(1), NULL, NULL),
+                              NULL);
+
+    ExprNodePtr listleft = makeExpr(OP_ALIST, 0, NULL, EBIN(OP_SUB, EVAR(param_k), ECONST(2)), NULL);
+    ExprNodePtr listright = makeExpr(OP_ALIST, 0, NULL, EBIN(OP_SUB, EVAR(param_k), ECONST(1)), NULL);
+    ExprNodePtr fibleft = makeExpr(OP_FUNCALL, 0, fib, listleft, NULL);
+    ExprNodePtr fibright = makeExpr(OP_FUNCALL, 0, fib, listright, NULL);
+
+    StmtNodePtr l3 = makeStmt(STMT_RETURN,
+                              NULL,
+                              EBIN(OP_ADD, fibleft, fibright),
+                              NULL,
+                              NULL);
+
+    l2->next = l3;
+
+    sourcedefs = makeDef(DEF_FUNC, fib, l2);
+    SymEntryPtr mein = makeSym(SYM_FUNC, "main", 3, 0, 1, NULL);
+    SymEntryPtr lclv = makeSym(SYM_VAR, "v", 1, 0, 0, mein);
+
+    StmtNodePtr l8 = IN(lclv);
+
+    ExprNodePtr fibcall = makeExpr(OP_FUNCALL, 0, fib, makeExpr(OP_ALIST, 0, NULL, EVAR(lclv), NULL), NULL);
+    StmtNodePtr l9 = OUT(fibcall);
+    l8->next = l9;
+
+    StmtNodePtr l10 = makeStmt(STMT_RETURN, NULL, ECONST(0), NULL, NULL);
+    l9->next = l10;
+
+    sourcedefs->next = makeDef(DEF_FUNC, mein, l8);
+
+    genCode();
 }
 
 int main()
 {
     af = stdout;
     test();
-
-    fprintf(af, "      halt\n");
-    // fprintf(af, "      G0000: .space 1 ; sum\n");
-    // fprintf(af, "      G0001: .space 1 ; k\n");
-
-    if (multcall)
-        multLib();
-    if (divcall)
-        divLib();
 
     return 0;
 }

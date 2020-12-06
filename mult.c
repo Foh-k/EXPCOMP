@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 extern FILE *af;
-int multcall = 0;
 
 void multLib(void)
 {
