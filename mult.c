@@ -13,7 +13,7 @@ void multLib(void)
     fprintf(af, "       push\n");
     fprintf(af, "       ld ixr, 2\n");
     fprintf(af, "       or #0\n");
-    fprintf(af, "       jsp _mul1\n");
+    fprintf(af, "       jps _mul1\n");
     fprintf(af, "       ld #0\n");
     fprintf(af, "       jp  _mul2\n");
     fprintf(af, "_mul1: not\n");

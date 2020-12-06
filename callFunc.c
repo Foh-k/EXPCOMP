@@ -14,11 +14,11 @@ void genCodeFunc(DefNodePtr func)
     fprintf(af, "      push\n");
     fprintf(af, "      mv acc, sp\n");
     fprintf(af, "      st _FP\n");
-    fprintf(af, "      sub #%04d\n", func->sym->nVar);
+    fprintf(af, "      sub #%04d\n", func->sym->nVar);  
     fprintf(af, "      mv sp, acc\n");
     genCodeStmt(func->body);
     fprintf(af, "      push\n");
-    fprintf(af, "E%04d\n", func->sym->no);
+    fprintf(af, "E%04d:\n", func->sym->no);
     fprintf(af, "      ld _FP\n");
     fprintf(af, "      mv ixr, acc\n");
     fprintf(af, "      pop\n");

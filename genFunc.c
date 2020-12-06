@@ -5,6 +5,7 @@
 
 void genCodeExprFuncall(ExprNodePtr expr)
 {
+    // 返り値の場所の確保
     fprintf(af, "      dec sp\n");
     // 引数を持つ
     if (expr->sub1)
@@ -16,7 +17,7 @@ void genCodeExprFuncall(ExprNodePtr expr)
             alist = alist->sub2;
         } while (alist && (alist->op == OP_ALIST)); // NULLでリスト終了
     }
-    fprintf(af, "      call F%04d\n", expr->sym->no);
+    fprintf(af, "      call F%04d ; call Function %s\n", expr->sym->no, expr->sym->name);
     fprintf(af, "      mv acc, sp\n");
     fprintf(af, "      add #%04d\n", expr->sym->nParam);
     fprintf(af, "      mv sp, acc\n");

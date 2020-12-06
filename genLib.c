@@ -20,7 +20,7 @@ void genCodeExprVar(ExprNodePtr expr)
             // 局所変数
             fprintf(af, "      ld _FP\n");
             fprintf(af, "      mv ixr, acc\n");
-            fprintf(af, "      ld ixr, %d\n", s->no);
+            fprintf(af, "      ld ixr, %d\n", s->no * -1);
             fprintf(af, "      push\n");
         }
         else
@@ -35,7 +35,7 @@ void genCodeExprVar(ExprNodePtr expr)
         // 仮引数
         fprintf(af, "      ld _FP\n");
         fprintf(af, "      mv ixr, acc\n");
-        fprintf(af, "      ld ixr, %d\n", 2 + s->belong->nParam - s->no);
+        fprintf(af, "      ld ixr, %d ; load variable %s\n", 2 + s->belong->nParam - s->no, s->name);
         fprintf(af, "      push\n");
         break;
 
@@ -58,20 +58,20 @@ void genCodeExprAssign(ExprNodePtr expr)
             fprintf(af, "      ld _FP\n");
             fprintf(af, "      mv ixr, acc\n");
             fprintf(af, "      pop\n");
-            fprintf(af, "      st ixr, %d\n", s->no);
+            fprintf(af, "      st ixr, %d\n", s->no * -1);
             fprintf(af, "      push\n");
         }
         else
         {
             // 大域変数
             fprintf(af, "      pop ; =Assignment\n");
-            fprintf(af, "      st G%04d\n", expr->sym->no);
+            fprintf(af, "      st G%04d\n", s->no);
             fprintf(af, "      push\n");
         }
         break;
 
     case SYM_PARAM:
-        // 仮引数、代入していいかは微妙
+        // 仮引数
         fprintf(af, "      ld _FP\n");
         fprintf(af, "      mv ixr, acc\n");
         fprintf(af, "      pop\n");
