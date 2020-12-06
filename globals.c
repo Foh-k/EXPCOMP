@@ -7,33 +7,24 @@ DefNodePtr sourcedefs;
 
 void genCodeGlobals()
 {
-    fprintf(af, "G%04d:.space 1 ; Define Global Variable %s", sourcedefs->sym->no, sourcedefs->sym->name);
+    DefNodePtr defs = sourcedefs;
+    while (defs)
+    {
+        if (defs->sort == DEF_GLOBAL)
+            fprintf(af, "G%04d:.space 1 ; Global Variable %s", sourcedefs->sym->no, sourcedefs->sym->name);
+
+        defs = defs->next;
+    }
 }
 
 void genCodeFuncs()
 {
-    genCodeFunc(sourcedefs);
-}
-
-void genCodeDef()
-{
-    while (sourcedefs)
+    DefNodePtr defs = sourcedefs;
+    while (defs)
     {
-        switch (sourcedefs->sort)
-        {
-        case DEF_GLOBAL:
-            genCodeGlobals();
-            break;
-
-        case DEF_FUNC:
-            genCodeFuncs();
-            break;
-
-        default:
-            fprintf(stderr, "undefined DefSort\n");
-            exit(1);
-        }
-
-        sourcedefs = sourcedefs->next;
+        if (defs->sort == DEF_FUNC)
+            genCodeFunc(defs);
+        
+        defs = defs->next;
     }
 }

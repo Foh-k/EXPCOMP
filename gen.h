@@ -71,4 +71,3 @@ void out(DefNodePtr func);
 // in globals.c
 void genCodeGlobals();
 void genCodeFuncs();
-void genCodeDef();
