@@ -19,5 +19,5 @@ void genCodeExprFuncall(ExprNodePtr expr)
     fprintf(af, "      call F%04d\n", expr->sym->no);
     fprintf(af, "      mv acc, sp\n");
     fprintf(af, "      add #%04d\n", expr->sym->nParam);
-    fprintf(af, "      sp, acc\n");
+    fprintf(af, "      mv sp, acc\n");
 }

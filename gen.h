@@ -10,6 +10,7 @@ extern int divcall;
 extern int labelNo;
 // 関数呼び出し時に利用
 extern SymEntryPtr curfunc;
+// extern DefNodePtr sourcedefs;
 
 // in gen.c
 void genCodeExpr(ExprNodePtr expr);
@@ -63,5 +64,5 @@ void genCodeStmtReturn();
 void genCodeFunc(DefNodePtr func);
 
 // in io.c
-int in();
-int out();
+void in(DefNodePtr func);
+void out(DefNodePtr func);
