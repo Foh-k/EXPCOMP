@@ -1,5 +1,5 @@
-#include "ast.h"
-#include "gen.h"
+#include "../Headers/ast.h"
+#include "../Headers/gen.h"
 #include <stdio.h>
 #include <stdlib.h>
 
