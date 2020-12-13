@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "../Headers/ast.h"
 
+SymEntryPtr curfunc = NULL;
+SymEntryPtr symtable = NULL;
+DefNodePtr sourcedefs = NULL;
+
 ExprNodePtr makeExpr(OpSort opr, int value, SymEntryPtr symbol, ExprNodePtr left, ExprNodePtr right)
 {
     ExprNodePtr node;
@@ -20,7 +24,24 @@ ExprNodePtr makeExpr(OpSort opr, int value, SymEntryPtr symbol, ExprNodePtr left
     return node;
 }
 
-StmtNodePtr makeStmt(StmtSort sort, StmtNodePtr next, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2)
+ExprNodePtr makeFuncExpr(OpSort opr, char* symName, ExprNodePtr alist)
+{
+    int cnt = 0;
+    SymEntryPtr symbol = symLookup(symName);
+    
+    while (alist)
+    {
+        cnt++;
+        alist = alist->sub2;
+    }
+
+    if (symbol->nParam != cnt)
+        fprintf(stderr, "Params Error in makeFuncExpr()\n");
+
+    return makeExpr(opr, 0, symbol, alist, NULL);
+}
+
+StmtNodePtr makeStmt(StmtSort sort, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2)
 {
     StmtNodePtr node;
     if ((node = (StmtNodePtr)malloc(sizeof(StmtNode) * 8)) == NULL)
@@ -30,7 +51,6 @@ StmtNodePtr makeStmt(StmtSort sort, StmtNodePtr next, ExprNodePtr expr, StmtNode
     }
 
     node->sort = sort;
-    node->next = next;
     node->expr = expr;
     node->st1 = st1;
     node->st2 = st2;

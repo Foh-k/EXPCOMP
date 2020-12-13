@@ -18,13 +18,14 @@ GOBJ += Gens/callFunc.o
 GOBJ += Gens/io.o
 GOBJ += Gens/globals.o
 GOBJ += Gens/runtime.o
+GOBJ += Gens/symtable.o
 
 OBJS += ${GOBJ}
 
 HFILE := Headers/ast.h
 HFILE += Headers/gen.h
 
-genall: ${GOBJ}
+# genall: ${GOBJ}
 
 ${GOBJ}: ${HFILE}
 

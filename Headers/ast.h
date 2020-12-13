@@ -1,5 +1,6 @@
 #pragma once
 
+
 typedef enum {
     OP_ASSIGN, /* Assignment */
     OP_LOR, OP_LAND, OP_BLT, OP_BEQ, OP_BNE, /* Binary Operators */
@@ -17,6 +18,7 @@ typedef enum {
 
 typedef struct SymEntry *SymEntryPtr;
 typedef struct SymEntry{
+    SymEntryPtr prev;
     SymbolSort sort;
     char *name;
     int no;
@@ -64,7 +66,39 @@ typedef struct DefNode
 
 // in ast.c
 ExprNodePtr makeExpr(OpSort opr, int value, SymEntryPtr symbol, ExprNodePtr left, ExprNodePtr right);
-StmtNodePtr makeStmt(StmtSort sort, StmtNodePtr next, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2);
+ExprNodePtr makeFuncExpr(OpSort opr, char* symName, ExprNodePtr alist);
+StmtNodePtr makeStmt(StmtSort sort, ExprNodePtr expr, StmtNodePtr st1, StmtNodePtr st2);
 SymEntryPtr makeSym(SymbolSort sort, char* name, int no, int nParam, int nVar, SymEntryPtr belong);
 DefNodePtr makeDef(DefSort sort, SymEntryPtr sym, StmtNodePtr body);
 
+// in symtable.c
+SymEntryPtr symAdd(SymbolSort sort, char *name, int no, int nParam, int nVar, SymEntryPtr belong);
+SymEntryPtr addgvar(char *name);
+SymEntryPtr symLookup(char *name);
+void funcHead(char *name);
+void funcParams();
+DefNodePtr removeProtoParams();
+void paramAdd(char *name);
+void lvarAdd(char *name);
+DefNodePtr funcDef(StmtNodePtr stmt);
+
+// declared in ast.c
+// 関数呼び出し時に利用
+extern SymEntryPtr curfunc;
+// 記号表の末尾
+extern SymEntryPtr symtable;
+// 定義部の先頭ポインタ
+extern DefNodePtr sourcedefs;
+
+
+// declared in symtable.c
+// グローバル変数の番号
+extern int cntGlobal;
+// 関数の番号
+extern int cntFuncs;
+// ローカル変数の番号
+extern int cntLocal;
+// 引数の数
+extern int cntParam;
+// プロトタイプ宣言がなされているかの確認
+extern int hasProto;

@@ -10,6 +10,10 @@ include Yaccs/Makefile
 test1: ${OBJS}
 	${CC} -o $@ ${CFLAGS} ${OBJS}
 
+yaccmake: ${YOBJ} # Yaccのみをコンパイルするやつ
+	${CC} -o ${?:.o=} ${CFLAGS} ${YOBJ} 
+
+
 .PHONY: clean
 
 clean: yclean genclean

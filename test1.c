@@ -5,12 +5,11 @@
 #define ECONST(k) makeExpr(OP_CONST, k, NULL, NULL, NULL)
 #define EVAR(p) makeExpr(OP_VAR, 0, p, NULL, NULL)
 #define EBIN(op, l, r) makeExpr(op, 0, NULL, l, r)
-#define SEXPR(e) makeStmt(STMT_EXPR, NULL, e, NULL, NULL)
+#define SEXPR(e) makeStmt(STMT_EXPR, e, NULL, NULL)
 #define IN(var) SEXPR(makeExpr(OP_ASSIGN, 0, var, makeExpr(OP_FUNCALL, 0, fin, NULL, NULL), NULL))
 #define OUT(f) SEXPR(makeExpr(OP_FUNCALL, 0, fout, makeExpr(OP_ALIST, 0, NULL, f, NULL), NULL))
 
 FILE *af;
-DefNodePtr sourcedefs;
 
 void test()
 {
@@ -20,9 +19,8 @@ void test()
     SymEntryPtr param_k = makeSym(SYM_PARAM, "k", 1, 0, 0, fib);
 
     StmtNodePtr l2 = makeStmt(STMT_IF,
-                              NULL,
                               EBIN(OP_BLT, EVAR(param_k), ECONST(2)),
-                              makeStmt(STMT_RETURN, NULL, ECONST(1), NULL, NULL),
+                              makeStmt(STMT_RETURN, ECONST(1), NULL, NULL),
                               NULL);
 
     ExprNodePtr listleft = makeExpr(OP_ALIST, 0, NULL, EBIN(OP_SUB, EVAR(param_k), ECONST(2)), NULL);
@@ -31,7 +29,6 @@ void test()
     ExprNodePtr fibright = makeExpr(OP_FUNCALL, 0, fib, listright, NULL);
 
     StmtNodePtr l3 = makeStmt(STMT_RETURN,
-                              NULL,
                               EBIN(OP_ADD, fibleft, fibright),
                               NULL,
                               NULL);
@@ -48,7 +45,7 @@ void test()
     StmtNodePtr l9 = OUT(fibcall);
     l8->next = l9;
 
-    StmtNodePtr l10 = makeStmt(STMT_RETURN, NULL, ECONST(0), NULL, NULL);
+    StmtNodePtr l10 = makeStmt(STMT_RETURN, ECONST(0), NULL, NULL);
     l9->next = l10;
 
     sourcedefs->next = makeDef(DEF_FUNC, mein, l8);
@@ -56,10 +53,18 @@ void test()
     genCode();
 }
 
+
+void testtable()
+{
+    // あとで考える。
+}
+
 int main()
 {
     af = stdout;
-    test();
+    // test();
+    // testtable();
+    yyparse();
 
     return 0;
 }

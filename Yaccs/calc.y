@@ -7,6 +7,9 @@
 
 extern int yydebug;
 
+int yylex(void);
+int yyerror(char *msg);
+
 %}
 
 %token NUM UMINUS

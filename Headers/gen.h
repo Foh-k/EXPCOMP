@@ -8,8 +8,7 @@ extern FILE *af;
 extern int multcall;
 extern int divcall;
 extern int labelNo;
-// 関数呼び出し時に利用
-extern SymEntryPtr curfunc;
+
 extern DefNodePtr sourcedefs;
 
 // in gen.c

@@ -3,8 +3,6 @@
 #include "../Headers/ast.h"
 #include "../Headers/gen.h"
 
-SymEntryPtr curfunc;
-
 void genCodeFunc(DefNodePtr func)
 {
     SymEntryPtr prevfunc = curfunc;
