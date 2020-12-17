@@ -75,6 +75,7 @@ DefNodePtr makeDef(DefSort sort, SymEntryPtr sym, StmtNodePtr body);
 SymEntryPtr symAdd(SymbolSort sort, char *name, int no, int nParam, int nVar, SymEntryPtr belong);
 SymEntryPtr addgvar(char *name);
 SymEntryPtr symLookup(char *name);
+StmtNodePtr addStmt(StmtNodePtr stmt1, StmtNodePtr stmt2);
 void funcHead(char *name);
 void funcParams();
 DefNodePtr removeProtoParams();

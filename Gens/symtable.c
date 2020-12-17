@@ -5,7 +5,7 @@
 #include "../Headers/ast.h"
 
 int cntGlobal;
-int cntFuncs;
+int cntFuncs = 2;
 int cntLocal;
 int cntParam;
 int hasProto;
@@ -53,6 +53,22 @@ SymEntryPtr symLookup(char *name)
     return t;
 }
 
+StmtNodePtr addStmt(StmtNodePtr stmt1, StmtNodePtr stmt2)
+{
+    StmtNodePtr s = stmt1;
+    if (s)
+    {
+        while (s->next)
+        {
+            s = s->next;
+        }
+        s->next = stmt2;
+        return stmt1;
+    }
+    else
+        return stmt2;
+}
+
 void funcHead(char *name)
 {
     SymEntryPtr sym;
@@ -88,7 +104,7 @@ void funcHead(char *name)
         sym = symAdd(SYM_FUNC, name, cntFuncs++, 0, 0, NULL);
         hasProto = 0;
     }
-    cntParam = 0;
+    cntParam = 1;
     cntLocal = 0;
     curfunc = sym;
 }
@@ -98,7 +114,7 @@ void funcParams()
     if (hasProto)
     {
         assert(curfunc);
-        if (curfunc->nParam != cntParam)
+        if (curfunc->nParam != cntParam - 1)
         {
             fprintf(stderr, "Unmatch number of parameters\n");
             exit(1);
@@ -107,7 +123,7 @@ void funcParams()
     else
     {
         assert(curfunc);
-        curfunc->nParam = cntParam;
+        curfunc->nParam = cntParam - 1;
     }
 }
 

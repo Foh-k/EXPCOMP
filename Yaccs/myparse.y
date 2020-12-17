@@ -1,6 +1,7 @@
 %{
     // C code
     #include "../Headers/ast.h"
+    #include "../Headers/gen.h"
     
     int yylex(void);
     int yyerror(char *msg);
@@ -71,20 +72,20 @@ expr
     | BNOT expr { $$ = makeExpr(OP_BNOT, 0, NULL, $2, NULL); }
     | INC expr  { $$ = makeExpr(OP_INC, 0, NULL, $2, NULL); }
     | DEC expr  { $$ = makeExpr(OP_DEC, 0, NULL, $2, NULL); }
-    | ID '(' alist ')'  { $$ = makeFuncExpr(OP_FUNCALL, $1, $3);    }
+    | ID '(' alist ')'  { $$ = makeFuncExpr(OP_FUNCALL, $1, $3); }
     | '(' expr ')'  { $$ = $2; }
     | ID    { $$ = makeExpr(OP_VAR, 0, symLookup($1), NULL, NULL); }
     ;
 
 alist
-    : expr { $$ = makeExpr(OP_ALIST, 0, NULL, $1, NULL); }
-    | expr ',' alist { $$ = makeExpr(OP_ALIST, 0, NULL, $1, $3); }
-    | /* Empty */ { $$ = NULL; }
+    : /* Empty */ { $$ = NULL; }
+    | expr { $$ = makeExpr(OP_ALIST, 0, NULL, $1, NULL); }
+    | alist ',' expr { $$ = makeExpr(OP_ALIST, 0, NULL, $1, $3); }
     ;
 
 st_list
     : /* Empty */ { $$ = NULL; }
-    | st_list stmt  { if($1) $1->next = $2; $$ = $1; }
+    | st_list stmt  { $$ = addStmt($1, $2); }
     ;
 
 stmt
@@ -158,11 +159,12 @@ int yyerror(char *msg)
 
 void output()
 {
-    fprintf(stdout, "output\n");
-    DefNodePtr dfs = sourcedefs;
-    while(dfs)
-    {
-        fprintf(stdout, "%s\n", dfs->sym->name);
-        dfs = dfs->next;
-    }
+    fprintf(stderr, "output\n");
+    // DefNodePtr dfs = sourcedefs;
+    // while(dfs)
+    // {
+    //     fprintf(stdout, "%s\n", dfs->sym->name);
+    //     dfs = dfs->next;
+    // }
+    // genCode();
 }

@@ -49,8 +49,8 @@ int yylex()
     Ttokens *p = thetokens + i;
     i++;
 
-    fprintf(stdout, "Load a Token No:%d\n", i);
-    fprintf(stdout, "{%d, %d, %s}\n", p->sort, p->ival, p->name);
+    // fprintf(stdout, "Load a Token No:%d\n", i);
+    // fprintf(stdout, "{%d, %d, %s}\n", p->sort, p->ival, p->name);
 
     if (p->sort == NUM)
         yylval.ival = p->ival;

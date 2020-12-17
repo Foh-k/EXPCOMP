@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "Headers/ast.h"
-#include "Headers/gen.h"
+#include "Headers/gen.h"    
 
 #define ECONST(k) makeExpr(OP_CONST, k, NULL, NULL, NULL)
 #define EVAR(p) makeExpr(OP_VAR, 0, p, NULL, NULL)
@@ -56,7 +56,12 @@ void test()
 
 void testtable()
 {
-    // あとで考える。
+    // symtableに追加
+    symAdd(SYM_VAR, "test", 0, 0, 0, NULL);
+    symAdd(SYM_VAR, "dummy", 1, 0, 0, NULL);
+    // symtableからの検索
+    SymEntryPtr look = symLookup("test");
+    printf("%s\n", look->name);
 }
 
 int main()
@@ -65,6 +70,6 @@ int main()
     // test();
     // testtable();
     yyparse();
-
+    genCode();
     return 0;
 }

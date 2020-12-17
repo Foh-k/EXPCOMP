@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <assert.h>
 #include "../Headers/ast.h"
 
 SymEntryPtr curfunc = NULL;
@@ -29,12 +31,25 @@ ExprNodePtr makeFuncExpr(OpSort opr, char* symName, ExprNodePtr alist)
     int cnt = 0;
     SymEntryPtr symbol = symLookup(symName);
     
-    while (alist)
+    ExprNodePtr al = alist;
+    while (al)
     {
         cnt++;
-        alist = alist->sub2;
+        al = al->sub2;
     }
 
+
+    if(!strcmp("in", symName))
+    {
+        return makeExpr(opr, 0, makeSym(SYM_FUNC, "in", 0, 0, 0, NULL), NULL, NULL);
+    }
+    if(!strcmp("out", symName))
+    {
+        assert(alist);
+        return makeExpr(opr, 0, makeSym(SYM_FUNC, "out", 1, 1, 0, NULL), alist, NULL);
+    }   
+
+    assert(symbol);
     if (symbol->nParam != cnt)
         fprintf(stderr, "Params Error in makeFuncExpr()\n");
 
