@@ -5,31 +5,29 @@
 CC := gcc
 CFLAGS :=  -Wall -Wextra
 
-GOBJ := Gens/ast.o
-GOBJ += Gens/gen.o
-GOBJ += Gens/genLib.o
-GOBJ += Gens/genUnary.o
-GOBJ += Gens/genBinary.o
-GOBJ += Gens/genFunc.o
-GOBJ += Gens/stmt.o
-GOBJ += Gens/mult.o
-GOBJ += Gens/div.o
-GOBJ += Gens/callFunc.o
-GOBJ += Gens/io.o
-GOBJ += Gens/globals.o
-GOBJ += Gens/runtime.o
-GOBJ += Gens/symtable.o
+GOBJ := ast.o
+GOBJ += gen.o
+GOBJ += genLib.o
+GOBJ += genUnary.o
+GOBJ += genBinary.o
+GOBJ += genFunc.o
+GOBJ += stmt.o
+GOBJ += mult.o
+GOBJ += div.o
+GOBJ += callFunc.o
+GOBJ += io.o
+GOBJ += globals.o
+GOBJ += runtime.o
+GOBJ += symtable.o
 
-OBJS += ${GOBJ}
+HFILE := ../Headers/ast.h
+HFILE += ../Headers/gen.h
 
-HFILE := Headers/ast.h
-HFILE += Headers/gen.h
-
-# genall: ${GOBJ}
+genall: ${GOBJ}
 
 ${GOBJ}: ${HFILE}
 
 .PHONY: genclean
 
-genclean:
-	${RM} Gens/*.o
+clean:
+	${RM} *.o

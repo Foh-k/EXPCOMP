@@ -3,20 +3,40 @@ all: test1
 CC := gcc
 CFLAGS :=  -Wall -Wextra
 OBJS := test1.o
+# in Yaccs
+OBJS += Yaccs/myparse.o
+OBJS += Yaccs/lex.o
+# in Gens
+OBJS += Gens/ast.o
+OBJS += Gens/gen.o
+OBJS += Gens/genLib.o
+OBJS += Gens/genUnary.o
+OBJS += Gens/genBinary.o
+OBJS += Gens/genFunc.o
+OBJS += Gens/stmt.o
+OBJS += Gens/mult.o
+OBJS += Gens/div.o
+OBJS += Gens/callFunc.o
+OBJS += Gens/io.o
+OBJS += Gens/globals.o
+OBJS += Gens/runtime.o
+OBJS += Gens/symtable.o
 
-include Gens/Makefile
-include Yaccs/Makefile
-
-test1: ${OBJS}
+test1: yaccmake genmake ${OBJS}
 	${CC} -o $@ ${CFLAGS} ${OBJS}
 
-yaccmake: ${YOBJ} # Yaccのみをコンパイルするやつ
-	${CC} -o ${?:.o=} ${CFLAGS} ${YOBJ} 
+yaccmake: 
+	cd Yaccs; make;
+
+genmake:
+	cd Gens; make;
 
 
 .PHONY: clean
 
-clean: yclean genclean
+clean: 
+	cd Yaccs; make clean;
+	cd Gens; make clean;
 	${RM} *.o
 	${RM} test1
 	${RM} *.out

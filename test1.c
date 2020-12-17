@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "Headers/ast.h"
-#include "Headers/gen.h"    
+#include "Headers/gen.h"
+#include "Yaccs/y.tab.h"    
 
 #define ECONST(k) makeExpr(OP_CONST, k, NULL, NULL, NULL)
 #define EVAR(p) makeExpr(OP_VAR, 0, p, NULL, NULL)

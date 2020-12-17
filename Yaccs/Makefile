@@ -9,17 +9,20 @@ YFLAGS += -t
 YFLAGS += -v
 
 # YOBJ := Yaccs/calc.o
-YOBJ := Yaccs/myparse.o
-YOBJ += Yaccs/lex.o
+YOBJ := myparse.o
+YOBJ += lex.o
 
-OBJS += ${YOBJ} # 今後test1とリンクする必要があるかによって変更
+HFILE := ../Headers/ast.h
+HFILE += ../Headers/gen.h
 
-# yaccall: ${YOBJ}
+yaccall: ${YOBJ}
+
+${YOBJ}: ${HFILE}
 
 .PHONY: Yclean
 
-yclean:
-	${RM} Yaccs/*.o
-	${RM} Yaccs/*.tab.?
-	${RM} Yaccs/*.output
-	${RM} Yaccs/${YOBJ:.o=}
+clean:
+	${RM} *.o	
+	${RM} *.tab.?
+	${RM} *.output
+	${RM} ${YOBJ:.o=}
