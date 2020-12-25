@@ -1,8 +1,8 @@
-all: test1
+all: expcc
 
 CC := gcc
 CFLAGS :=  -Wall -Wextra
-OBJS := test1.o
+OBJS := expcc.o
 # in Yaccs
 OBJS += Yaccs/myparse.o
 # in Lex
@@ -23,7 +23,7 @@ OBJS += Gens/globals.o
 OBJS += Gens/runtime.o
 OBJS += Gens/symtable.o
 
-test1: yaccmake genmake ${OBJS}
+expcc: yaccmake genmake ${OBJS}
 	${CC} -o $@ ${CFLAGS} ${OBJS}
 
 yaccmake: 

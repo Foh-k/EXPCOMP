@@ -9,7 +9,7 @@ extern FILE *yyin;
 
 void help(FILE *o)
 {
-    fprintf(o, "Usage: ./test1 [options] file\n");
+    fprintf(o, "Usage: ./expcc [options] file\n");
     fprintf(o, "Options:\n");
     fprintf(o, "-h            \t View help\n");
     fprintf(o, "-o <filename> \t define output filename. if you don't use this option, file is named \"a.asm\" automatically\n");
