@@ -48,3 +48,4 @@ clean:
 	${RM} *.tab.c
 	${RM} *.tab.h
 	${RM} *.output
+	${RM} *.asm

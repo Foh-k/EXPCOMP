@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "Headers/ast.h"
 #include "Headers/gen.h"
 #include "Yaccs/y.tab.h"
@@ -11,6 +12,7 @@
 #define OUT(f) SEXPR(makeExpr(OP_FUNCALL, 0, fout, makeExpr(OP_ALIST, 0, NULL, f, NULL), NULL))
 
 FILE *af;
+extern FILE *yyin;
 
 void test()
 {
@@ -169,13 +171,79 @@ void lextest()
     }
 }
 
-int main()
+void help(FILE *o)
 {
-    af = stdout;
+    fprintf(o, "Usage: ./test1 [options] file\n");
+    fprintf(o, "Options:\n");
+    fprintf(o, "-h            \t View help\n");
+    fprintf(o, "-o <filename> \t define output filename. if you don't use this option, file is named \"a.asm\" automatically\n");
+    fprintf(o, "-t            \t output for stdout\n");
+    exit(0);
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc < 2)
+    {
+        // ファイル名指定なし
+        fprintf(stderr, "need to select a file written by picoC\n");
+        help(stderr);
+    }
+
+    int opt;
+    const char *optstring = "hto:";
+
+    while ((opt = getopt(argc, argv, optstring)) != -1)
+    {
+        switch (opt)
+        {
+        // ヘルプ表示
+        case 'h':
+            help(stdout);
+            break;
+
+        // 標準出力に表示
+        case 't':
+            af = stdout;
+            break;
+
+        // ファイル名指定
+        case 'o':
+            if ((af = fopen(optarg, "w")) == NULL)
+            {
+                fprintf(stderr, "Open file %s is failed\n", optarg);
+                exit(0);
+            }
+
+            break;
+
+        default:
+            fprintf(stderr, "Invalid option\n");
+            help(stderr);
+            break;
+        }
+    }
+    if (!af)
+    {
+        char* filename = "a.asm";
+        if ((af = fopen(filename, "w")) == NULL)
+        {
+            fprintf(stderr, "Open file a.asm is failed\n");
+        }
+    }
+
+    if ((yyin = fopen(argv[optind], "r")) == NULL)
+    {
+        fprintf(stderr, "Open file %s is failed\n", argv[optind]);
+        exit(1);
+    }
+
     // test();
     // testtable();
     // lextest();
     yyparse();
     genCode();
+
+    fclose(af);
     return 0;
 }
