@@ -27,7 +27,7 @@ genall: ${GOBJ}
 
 ${GOBJ}: ${HFILE}
 
-.PHONY: genclean
+.PHONY: clean
 
 clean:
 	${RM} *.o

@@ -3,7 +3,7 @@
     #include "../Headers/ast.h"
     #include "../Headers/gen.h"
     
-    int yylex(void);
+    extern int yylex(void);
     int yyerror(char *msg);
     void output();
 %}

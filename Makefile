@@ -5,7 +5,8 @@ CFLAGS :=  -Wall -Wextra
 OBJS := test1.o
 # in Yaccs
 OBJS += Yaccs/myparse.o
-OBJS += Yaccs/lex.o
+# in Lex
+OBJS += Lex/mylex.o
 # in Gens
 OBJS += Gens/ast.o
 OBJS += Gens/gen.o
@@ -26,17 +27,21 @@ test1: yaccmake genmake ${OBJS}
 	${CC} -o $@ ${CFLAGS} ${OBJS}
 
 yaccmake: 
-	cd Yaccs; make;
+	cd Yaccs; ${MAKE};
 
+lexmake:
+	cd Lex; ${MAKE};
+	
 genmake:
-	cd Gens; make;
+	cd Gens; ${MAKE};
 
 
-.PHONY: clean
+.PHONY: cleanmake
 
 clean: 
-	cd Yaccs; make clean;
-	cd Gens; make clean;
+	cd Yaccs; ${MAKE} clean;
+	cd Gens; ${MAKE} clean;
+	cd Lex; ${MAKE} clean;
 	${RM} *.o
 	${RM} test1
 	${RM} *.out
