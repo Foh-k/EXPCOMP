@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "Headers/ast.h"
 #include "Headers/gen.h"
-#include "Yaccs/y.tab.h"    
+#include "Yaccs/y.tab.h"
 
 #define ECONST(k) makeExpr(OP_CONST, k, NULL, NULL, NULL)
 #define EVAR(p) makeExpr(OP_VAR, 0, p, NULL, NULL)
@@ -54,7 +54,6 @@ void test()
     genCode();
 }
 
-
 void testtable()
 {
     // symtableに追加
@@ -65,11 +64,117 @@ void testtable()
     printf("%s\n", look->name);
 }
 
+extern int yylex(void);
+
+void lextest()
+{
+    int tok;
+    while ((tok = yylex()) != 0)
+    {
+        if (tok < 128)
+        {
+            printf("CHAR: %c\n", tok);
+        }
+        else
+        {
+            switch (tok)
+            {
+            case NUM:
+                printf("NUMBER: %d\n", yylval.ival);
+                break;
+            case ID:
+                printf("ID: %s\n", yylval.name);
+                break;
+            case IF:
+                printf("IF\n");
+                break;
+            case ELSE:
+                printf("ELSE\n");
+                break;
+            case WHILE:
+                printf("WHILE\n");
+                break;
+            case RETURN:
+                printf("RETURN\n");
+                break;
+            case TINT:
+                printf("TINT\n");
+                break;
+            case ASSIGN:
+                printf("ASSIGN\n");
+                break;
+            case LOR:
+                printf("LOR\n");
+                break;
+            case LAND:
+                printf("LAND\n");
+                break;
+            case BLT:
+                printf("BLT\n");
+                break;
+            case BEQ:
+                printf("BEQ\n");
+                break;
+            case BNE:
+                printf("BNE\n");
+                break;
+            case ADD:
+                printf("ADD\n");
+                break;
+            case SUB:
+                printf("SUB\n");
+                break;
+            case MUL:
+                printf("MUL\n");
+                break;
+            case DIV:
+                printf("DIV\n");
+                break;
+            case MOD:
+                printf("MOD\n");
+                break;
+            case BAND:
+                printf("BAND\n");
+                break;
+            case BOR:
+                printf("BOR\n");
+                break;
+            case XOR:
+                printf("XOR\n");
+                break;
+            case LSHIFT:
+                printf("LSHIFT\n");
+                break;
+            case RSHIFT:
+                printf("RSHIFT\n");
+                break;
+            case NOT:
+                printf("NOT\n");
+                break;
+            case UM:
+                printf("UM\n");
+                break;
+            case BNOT:
+                printf("BNOT\n");
+                break;
+            case INC:
+                printf("INC\n");
+                break;
+            case DEC:
+                printf("DEC\n");
+            default:
+                break;
+            }
+        }
+    }
+}
+
 int main()
 {
     af = stdout;
     // test();
     // testtable();
+    // lextest();
     yyparse();
     genCode();
     return 0;
