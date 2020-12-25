@@ -9,7 +9,7 @@ extern FILE *yyin;
 
 void help(FILE *o)
 {
-    fprintf(o, "Usage: ./expcc [options] file\n");
+    fprintf(o, "Usage: ./expcc [options] {file | code}\n");
     fprintf(o, "Options:\n");
     fprintf(o, "-h            \t View help\n");
     fprintf(o, "-o <filename> \t define output filename. if you don't use this option, file is named \"a.asm\" automatically\n");
@@ -19,13 +19,6 @@ void help(FILE *o)
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
-    {
-        // ファイル名指定なし
-        fprintf(stderr, "need to select a file written by picoC\n");
-        help(stderr);
-    }
-
     int opt;
     const char *optstring = "hto:";
 
@@ -61,17 +54,24 @@ int main(int argc, char *argv[])
     }
     if (!af)
     {
-        char* filename = "a.asm";
+        char *filename = "a.asm";
         if ((af = fopen(filename, "w")) == NULL)
         {
             fprintf(stderr, "Open file a.asm is failed\n");
         }
     }
 
-    if ((yyin = fopen(argv[optind], "r")) == NULL)
+    if (optind == argc)
     {
-        fprintf(stderr, "Open file %s is failed\n", argv[optind]);
-        exit(1);
+        yyin = stdin;
+    }
+    else
+    {
+        if ((yyin = fopen(argv[optind], "r")) == NULL)
+        {
+            fprintf(stderr, "Open file %s is failed\n", argv[optind]);
+            exit(1);
+        }
     }
 
     yyparse();
